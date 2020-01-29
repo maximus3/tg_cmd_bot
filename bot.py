@@ -80,7 +80,12 @@ def main(message):
         FILE = open('tmp_error')
         ans += '\nERROR: ' + str(code) + '\n' + FILE.read()
         FILE.close()
-    bot.send_message(mid, ans, reply_markup=markup)    
+    if len(ans) == 0:
+        ans = 'Success! (code ' + str(code) + ')'
+    try:
+        bot.send_message(mid, ans, reply_markup=markup)
+    except Exception as e:
+        bot.send_message(mid, str(e), reply_markup=markup)
         
 # WEBHOOK_START
 
@@ -104,4 +109,3 @@ cherrypy.config.update({
 cherrypy.quickstart(WebhookServer(), WEBHOOK_URL_PATH, {'/': {}})
 
 # WEBHOOK_FINISH
-
